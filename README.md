@@ -4,6 +4,7 @@ Hi every one! This is my project using STM32F103 and LMD18200 to control DC moto
 # Altium Design
 ![untitled](https://user-images.githubusercontent.com/23720583/48367631-e3e1f080-e6e3-11e8-95b4-366bb11d108c.png)
 
+![untitled](https://user-images.githubusercontent.com/23720583/48367773-4affa500-e6e4-11e8-93fb-d44bc452375a.png)
 
 # Diary:
 - Day 13/11/2018: Writing the test module for Timer and Direction button. Timer is working, also button but wrong pin of control LMD182001.
