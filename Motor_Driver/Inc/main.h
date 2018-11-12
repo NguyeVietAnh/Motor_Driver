@@ -51,8 +51,20 @@
 
 #define YELLOW_LED_Pin GPIO_PIN_13
 #define YELLOW_LED_GPIO_Port GPIOC
-#define BLUE_LED_Pin GPIO_PIN_5
-#define BLUE_LED_GPIO_Port GPIOB
+#define PWM_Pin GPIO_PIN_5
+#define PWM_GPIO_Port GPIOA
+#define DIR_Pin GPIO_PIN_6
+#define DIR_GPIO_Port GPIOA
+#define UP_Pin GPIO_PIN_12
+#define UP_GPIO_Port GPIOB
+#define DOWN_Pin GPIO_PIN_13
+#define DOWN_GPIO_Port GPIOB
+#define RIGHT_Pin GPIO_PIN_14
+#define RIGHT_GPIO_Port GPIOB
+#define LEFT_Pin GPIO_PIN_15
+#define LEFT_GPIO_Port GPIOB
+#define CEN_Pin GPIO_PIN_8
+#define CEN_GPIO_Port GPIOA
 
 /* ########################## Assert Selection ############################## */
 /**

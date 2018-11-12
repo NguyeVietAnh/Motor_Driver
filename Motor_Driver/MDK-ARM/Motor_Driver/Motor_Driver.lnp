@@ -4,6 +4,7 @@
 "motor_driver\stm32f1xx_it.o"
 "motor_driver\stm32f1xx_hal_msp.o"
 "motor_driver\stm32f1xx_hal_gpio_ex.o"
+"motor_driver\stm32f1xx_hal_i2c.o"
 "motor_driver\stm32f1xx_hal_tim.o"
 "motor_driver\stm32f1xx_hal_tim_ex.o"
 "motor_driver\stm32f1xx_hal_uart.o"
