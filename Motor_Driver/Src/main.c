@@ -62,9 +62,11 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_I2C1_Init(void);
+void user_pwm_setvalue(uint16_t value);
                                     
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
-                                
+
+int pwm_value,step;
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -120,11 +122,11 @@ int main(void)
 
   /* USER CODE BEGIN 3 */
 		
-//  HAL_Delay(100); 
-//  if(pwm_value == 0) step = 100;
-//  if(pwm_value == 2000) step = -100;
-//  pwm_value += step;
-//  user_pwm_setvalue(pwm_value);
+  HAL_Delay(100); 
+  if(pwm_value == 0) step = 100;
+  if(pwm_value == 2000) step = -100;
+  pwm_value += step;
+  user_pwm_setvalue(pwm_value);
 		
 		//-------------------------
 		
@@ -134,11 +136,11 @@ int main(void)
 //		HAL_Delay(10);
 		
 		//--------------------------
-		if (HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_8) == 0) {HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13); HAL_Delay(1000);}
-		if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_15) == 0) HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
-		if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_14) == 0) HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
-		if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_13) == 0) HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
-		if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_12) == 0) HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
+//		if (HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_8) == 0) {HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13); HAL_Delay(1000);}
+//		if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_15) == 0) HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
+//		if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_14) == 0) HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
+//		if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_13) == 0) HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
+//		if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_12) == 0) HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
 		//------------------------------
 		//HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13); HAL_Delay(1000);
 		
