@@ -41,15 +41,12 @@
 #include "stm32f1xx_hal.h"
 #include "string.h"
 
+
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
-I2C_HandleTypeDef hi2c1;
-
-TIM_HandleTypeDef htim3;
-
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
@@ -61,18 +58,79 @@ UART_HandleTypeDef huart2;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
-static void MX_TIM3_Init(void);
-static void MX_I2C1_Init(void);
-void user_pwm_setvalue(uint16_t value);
-                                    
-void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 
-int pwm_value,step;
+void LCD_Enable()
+{
+HAL_GPIO_WritePin(GPIOA,GPIO_PIN_0,GPIO_PIN_SET);
+HAL_Delay(1);
+HAL_GPIO_WritePin(GPIOA,GPIO_PIN_0,GPIO_PIN_RESET);	
+HAL_Delay(1);	
+}
+
+void LCD_Send4Bit(unsigned char Data)
+{
+HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,Data&0x01);
+HAL_GPIO_WritePin(GPIOA,GPIO_PIN_7,(Data>>1)&0x01);
+HAL_GPIO_WritePin(GPIOA,GPIO_PIN_9,(Data>>2)&0x01);
+HAL_GPIO_WritePin(GPIOA,GPIO_PIN_10,(Data>>3)&0x01);	
+}
+
+void LCD_SendCommand(unsigned char command)
+{
+	LCD_Send4Bit(command >>4);/* Gui 4 bit cao */
+	LCD_Enable();
+	LCD_Send4Bit(command);	/* Gui 4 bit thap*/
+	LCD_Enable();
+}
+///* USER CODE END 0 */
+void LCD_Clear()
+{
+ 	LCD_SendCommand(0x01);  
+  HAL_Delay(1);	
+}
+
+void LCD_Init()
+{
+	LCD_Send4Bit(0x00);
+  HAL_GPIO_WritePin(GPIOA,GPIO_PIN_1,GPIO_PIN_RESET);
+	LCD_Send4Bit(0x03);
+	LCD_Enable();
+	LCD_Enable();
+	LCD_Enable();
+	LCD_Send4Bit(0x02);
+	LCD_Enable();
+	LCD_SendCommand(0x28); // giao thuc 4 bit, hien thi 2 hang, ki tu 5x8
+	LCD_SendCommand(0x0C); // cho phep hien thi man hinh
+	LCD_SendCommand(0x06); // tang ID, khong dich khung hinh
+	LCD_SendCommand(0x01); // xoa toan bo khung hinh
+}
+
+void LCD_Gotoxy(unsigned char x, unsigned char y)
+{
+	unsigned char address;
+  	if(!y)address=(0x80+x);
+  	else address=(0xC0+x);
+  	LCD_SendCommand(address);
+
+}
+
+void LCD_PutChar(unsigned char Data)
+{
+  HAL_GPIO_WritePin(GPIOA,GPIO_PIN_1,GPIO_PIN_SET);
+ 	LCD_SendCommand(Data);
+  HAL_GPIO_WritePin(GPIOA,GPIO_PIN_1,GPIO_PIN_RESET);
+}
+
+void LCD_Puts(char *s)
+{
+   	while (*s){
+      	LCD_PutChar(*s);
+     	s++;
+   	}
+}
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
-
-/* USER CODE END PFP */
 #ifdef __GNUC__
   /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
      set to 'Yes') calls __io_putchar() */
@@ -82,7 +140,7 @@ int pwm_value,step;
   #define GETCHAR_PROTOTYPE int fgetc(FILE *f)
 #endif /* __GNUC__ */
 	PUTCHAR_PROTOTYPE
-	{
+{
   /* Place your implementation of fputc here */
   /* e.g. write a character to the USART */
 	HAL_UART_Transmit(&huart2, (uint8_t*)&ch,1,100);
@@ -92,6 +150,8 @@ int pwm_value,step;
 
   return ch;
 }
+/* USER CODE END PFP */
+
 
 /* USER CODE BEGIN 0 */
 
@@ -102,6 +162,7 @@ int pwm_value,step;
   *
   * @retval None
   */
+
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -127,45 +188,36 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
-  MX_TIM3_Init();
-  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
- HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+  LCD_Init();
+  LCD_Clear();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+		LCD_Gotoxy(0,0);
+		LCD_Puts("Hello World!");
+		HAL_Delay(500);
+//    HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_0);
+//		HAL_Delay(100);
+//		HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_1);
+//		HAL_Delay(100);
+//		HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_9);
+//		HAL_Delay(100);
+//		HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_10);
+//		HAL_Delay(100);
+//		HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_4);
+//		HAL_Delay(100);
+//		HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_7);
+//		HAL_Delay(100);
 
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-		
-  HAL_Delay(100); 
-  if(pwm_value == 0) step = 100;
-  if(pwm_value == 2000) step = -100;
-  pwm_value += step;
-  user_pwm_setvalue(pwm_value);
-		
-		//-------------------------
-		
-//		HAL_GPIO_WritePin(GPIOA,GPIO_PIN_5,GPIO_PIN_SET);
-//		HAL_Delay(20);
-//		HAL_GPIO_WritePin(GPIOA,GPIO_PIN_5,GPIO_PIN_RESET);
-//		HAL_Delay(10);
-		
-		//--------------------------
-//		if (HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_8) == 0) {HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13); HAL_Delay(1000);}
-//		if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_15) == 0) HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
-//		if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_14) == 0) HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
-//		if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_13) == 0) HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
-//		if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_12) == 0) HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
-		//------------------------------
-		//HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13); HAL_Delay(1000);
-		
-  }
 
+  }
   /* USER CODE END 3 */
 
 }
@@ -220,64 +272,6 @@ void SystemClock_Config(void)
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
 }
 
-/* I2C1 init function */
-static void MX_I2C1_Init(void)
-{
-
-  hi2c1.Instance = I2C1;
-  hi2c1.Init.ClockSpeed = 100000;
-  hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
-  hi2c1.Init.OwnAddress1 = 0;
-  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-  hi2c1.Init.OwnAddress2 = 0;
-  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
-
-}
-
-/* TIM3 init function */
-static void MX_TIM3_Init(void)
-{
-
-  TIM_MasterConfigTypeDef sMasterConfig;
-  TIM_OC_InitTypeDef sConfigOC;
-
-  htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 1080-1;
-  htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = 2000-1;
-  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_PWM_Init(&htim3) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
-
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
-
-  sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 0;
-  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
-
-  HAL_TIM_MspPostInit(&htim3);
-
-}
-
 /* USART2 init function */
 static void MX_USART2_UART_Init(void)
 {
@@ -321,6 +315,9 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, PWM_Pin|DIR_Pin|GPIO_PIN_10|GPIO_PIN_11, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
+
   /*Configure GPIO pin : YELLOW_LED_Pin */
   GPIO_InitStruct.Pin = YELLOW_LED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -329,7 +326,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(YELLOW_LED_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PWM_Pin DIR_Pin PA10 PA11 */
-  GPIO_InitStruct.Pin = PWM_Pin|DIR_Pin|GPIO_PIN_10|GPIO_PIN_11;
+  GPIO_InitStruct.Pin = PWM_Pin|DIR_Pin|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_7;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -347,20 +344,17 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(CEN_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : PB5 */
+  GPIO_InitStruct.Pin = GPIO_PIN_5;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
 }
 
 /* USER CODE BEGIN 4 */
-void user_pwm_setvalue(uint16_t value)
-{
-    TIM_OC_InitTypeDef sConfigOC;
-  
-    sConfigOC.OCMode = TIM_OCMODE_PWM1;
-    sConfigOC.Pulse = value;
-    sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-    sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-    HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_2);
-    HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);  
-}
+
 
 /* USER CODE END 4 */
 
