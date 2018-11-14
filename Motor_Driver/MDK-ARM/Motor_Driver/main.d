@@ -25,3 +25,4 @@ motor_driver\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.
 motor_driver\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
 motor_driver\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 motor_driver\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+motor_driver\main.o: ..\Custom_Library\stm32f1xx_hal_lcd1602.h

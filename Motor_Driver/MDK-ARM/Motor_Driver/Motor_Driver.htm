@@ -3,7 +3,7 @@
 <title>Static Call Graph - [Motor_Driver\Motor_Driver.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image Motor_Driver\Motor_Driver.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Wed Nov 14 10:12:52 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Wed Nov 14 10:48:13 2018
 <BR><P>
 <H3>Maximum Stack Usage =        136 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -264,9 +264,9 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 </UL>
-<BR>[Called By]<UL><LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<BR>[Called By]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Clear
+<LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Enable
-<LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Clear
 </UL>
 
 <P><STRONG><a name="[4c]"></a>HAL_GPIO_Init</STRONG> (Thumb, 408 bytes, Stack size 40 bytes, stm32f1xx_hal_gpio.o(i.HAL_GPIO_Init))
@@ -277,11 +277,11 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[50]"></a>HAL_GPIO_WritePin</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, stm32f1xx_hal_gpio.o(i.HAL_GPIO_WritePin))
-<BR><BR>[Called By]<UL><LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Send4Bit
-<LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_PutChar
-<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
-<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Enable
+<BR><BR>[Called By]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
 <LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
+<LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Send4Bit
+<LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_PutChar
+<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Enable
 </UL>
 
 <P><STRONG><a name="[3c]"></a>HAL_GetTick</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32f1xx_hal.o(i.HAL_GetTick))
@@ -423,7 +423,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xb.o(RESET)
 </UL>
-<P><STRONG><a name="[4d]"></a>LCD_Clear</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, main.o(i.LCD_Clear))
+<P><STRONG><a name="[4d]"></a>LCD_Clear</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, stm32f1xx_hal_lcd1602.o(i.LCD_Clear))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = LCD_Clear &rArr; LCD_SendCommand &rArr; LCD_Enable &rArr; HAL_Delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
@@ -432,17 +432,17 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[4f]"></a>LCD_Enable</STRONG> (Thumb, 40 bytes, Stack size 8 bytes, main.o(i.LCD_Enable))
+<P><STRONG><a name="[4f]"></a>LCD_Enable</STRONG> (Thumb, 40 bytes, Stack size 8 bytes, stm32f1xx_hal_lcd1602.o(i.LCD_Enable))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = LCD_Enable &rArr; HAL_Delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 <LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 </UL>
-<BR>[Called By]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SendCommand
-<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
+<BR>[Called By]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
+<LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SendCommand
 </UL>
 
-<P><STRONG><a name="[51]"></a>LCD_Gotoxy</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, main.o(i.LCD_Gotoxy))
+<P><STRONG><a name="[51]"></a>LCD_Gotoxy</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, stm32f1xx_hal_lcd1602.o(i.LCD_Gotoxy))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = LCD_Gotoxy &rArr; LCD_SendCommand &rArr; LCD_Enable &rArr; HAL_Delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SendCommand
@@ -450,7 +450,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[52]"></a>LCD_Init</STRONG> (Thumb, 74 bytes, Stack size 8 bytes, main.o(i.LCD_Init))
+<P><STRONG><a name="[52]"></a>LCD_Init</STRONG> (Thumb, 74 bytes, Stack size 8 bytes, stm32f1xx_hal_lcd1602.o(i.LCD_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = LCD_Init &rArr; LCD_SendCommand &rArr; LCD_Enable &rArr; HAL_Delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
@@ -461,7 +461,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[54]"></a>LCD_PutChar</STRONG> (Thumb, 36 bytes, Stack size 16 bytes, main.o(i.LCD_PutChar))
+<P><STRONG><a name="[54]"></a>LCD_PutChar</STRONG> (Thumb, 36 bytes, Stack size 16 bytes, stm32f1xx_hal_lcd1602.o(i.LCD_PutChar))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = LCD_PutChar &rArr; LCD_SendCommand &rArr; LCD_Enable &rArr; HAL_Delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
@@ -470,7 +470,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Puts
 </UL>
 
-<P><STRONG><a name="[55]"></a>LCD_Puts</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, main.o(i.LCD_Puts))
+<P><STRONG><a name="[55]"></a>LCD_Puts</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, stm32f1xx_hal_lcd1602.o(i.LCD_Puts))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = LCD_Puts &rArr; LCD_PutChar &rArr; LCD_SendCommand &rArr; LCD_Enable &rArr; HAL_Delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_PutChar
@@ -478,25 +478,25 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[53]"></a>LCD_Send4Bit</STRONG> (Thumb, 58 bytes, Stack size 16 bytes, main.o(i.LCD_Send4Bit))
+<P><STRONG><a name="[53]"></a>LCD_Send4Bit</STRONG> (Thumb, 58 bytes, Stack size 16 bytes, stm32f1xx_hal_lcd1602.o(i.LCD_Send4Bit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = LCD_Send4Bit
 </UL>
 <BR>[Calls]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 </UL>
-<BR>[Called By]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SendCommand
-<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
+<BR>[Called By]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
+<LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SendCommand
 </UL>
 
-<P><STRONG><a name="[4e]"></a>LCD_SendCommand</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, main.o(i.LCD_SendCommand))
+<P><STRONG><a name="[4e]"></a>LCD_SendCommand</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, stm32f1xx_hal_lcd1602.o(i.LCD_SendCommand))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = LCD_SendCommand &rArr; LCD_Enable &rArr; HAL_Delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Send4Bit
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Enable
 </UL>
-<BR>[Called By]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_PutChar
-<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
+<BR>[Called By]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
 <LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Gotoxy
 <LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Clear
+<LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_PutChar
 </UL>
 
 <P><STRONG><a name="[3]"></a>MemManage_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f1xx_it.o(i.MemManage_Handler))
@@ -555,14 +555,14 @@ Global Symbols
 <P><STRONG><a name="[35]"></a>main</STRONG> (Thumb, 82 bytes, Stack size 0 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = main &rArr; SystemClock_Config &rArr; HAL_RCC_ClockConfig &rArr; HAL_InitTick &rArr; HAL_NVIC_SetPriority
 </UL>
-<BR>[Calls]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Init
-<LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Init
-<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
-<LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Puts
+<BR>[Calls]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Puts
 <LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
 <LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Gotoxy
 <LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Clear
+<LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Init
+<LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Init
+<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
+<LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 <LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)

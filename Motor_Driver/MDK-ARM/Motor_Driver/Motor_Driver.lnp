@@ -17,6 +17,7 @@
 "motor_driver\stm32f1xx_hal_flash.o"
 "motor_driver\stm32f1xx_hal_flash_ex.o"
 "motor_driver\system_stm32f1xx.o"
+"motor_driver\stm32f1xx_hal_lcd1602.o"
 --library_type=microlib --strict --scatter "Motor_Driver\Motor_Driver.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

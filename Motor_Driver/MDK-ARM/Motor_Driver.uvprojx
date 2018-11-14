@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;..\Src;..\Src;..\..\..\X\Code\Library\STM32F103-Tutorial\12.ADC_LCD_16x2\Inc</IncludePath>
+              <IncludePath>../Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;..\Src;..\Src;..\Custom_Library</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -490,6 +490,13 @@
         </Group>
         <Group>
           <GroupName>Custom_Library</GroupName>
+          <Files>
+            <File>
+              <FileName>stm32f1xx_hal_lcd1602.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Custom_Library\stm32f1xx_hal_lcd1602.c</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>::CMSIS</GroupName>
