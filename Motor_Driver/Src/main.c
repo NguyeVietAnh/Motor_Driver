@@ -11,9 +11,11 @@
 #include "stm32f1xx_hal.h"
 #include "string.h"
 #include "stm32f1xx_hal_lcd1602.h"
+#include "stdio.h"
 
 
 /* USER CODE BEGIN Includes */
+char DATA[20];                    //--Mang chua du lieu LCD--
 
 /* USER CODE END Includes */
 
@@ -97,11 +99,18 @@ int main(void)
   /* USER CODE END 2 */
 	
 	//----Init LCD-----
-    LCD_Display();
+  LCD_Display();
+		
+		
   while (1)
   {
 
-  }
+		//sprintf(DATA,"%d",s);
+		
+
+	}
+	
+  
 
 }
 
