@@ -112,7 +112,7 @@ int main(void)
 					
 			
 			s = s + 1;
-			HAL_Delay(500);
+			HAL_Delay(100);
 			LCD_Gotoxy(9,1);
 			sprintf(DATA,"%d",s);
 			LCD_Puts(DATA);
@@ -124,7 +124,7 @@ int main(void)
 			
 			s = s - 1;
 			if (s < 0) s =0;
-			HAL_Delay(500);
+			HAL_Delay(100);
 			LCD_Gotoxy(9,1);
 			sprintf(DATA,"%d",s);
 			LCD_Puts(DATA);
@@ -136,6 +136,9 @@ int main(void)
 			HAL_Delay(s);
 			}
 		}
+		printf("Gia tri PWM: %d",s);
+		HAL_Delay(500);
+		
 
   }
 
