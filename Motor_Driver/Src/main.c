@@ -15,7 +15,8 @@
 
 
 /* USER CODE BEGIN Includes */
-char DATA[20];                    //--Mang chua du lieu LCD--
+char DATA[20];
+int s = 0;//--Mang chua du lieu LCD--
 
 /* USER CODE END Includes */
 
@@ -100,15 +101,45 @@ int main(void)
 	
 	//----Init LCD-----
   LCD_Display();
-		
+	HAL_GPIO_WritePin(GPIOA,DIR_Pin,GPIO_PIN_RESET);
 		
   while (1)
   {
 
 		//sprintf(DATA,"%d",s);
+		if (HAL_GPIO_ReadPin(GPIOB, UP_Pin) == 0)
+		{
+					
+			
+			s = s + 1;
+			HAL_Delay(500);
+			LCD_Gotoxy(9,1);
+			sprintf(DATA,"%d",s);
+			LCD_Puts(DATA);
+		}
 		
+			if (HAL_GPIO_ReadPin(GPIOB, DOWN_Pin) == 0)
+		{
+					
+			
+			s = s - 1;
+			if (s < 0) s =0;
+			HAL_Delay(500);
+			LCD_Gotoxy(9,1);
+			sprintf(DATA,"%d",s);
+			LCD_Puts(DATA);
+   	}
+		if (HAL_GPIO_ReadPin(GPIOA,CEN_Pin) == 0)
+		{
+			for (int dem = 0; dem < 10000; dem++){
+			HAL_GPIO_TogglePin(GPIOA,PWM_Pin);
+			HAL_Delay(s);
+			}
+		}
 
-	}
+  }
+
+	
 	
   
 
@@ -218,7 +249,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(YELLOW_LED_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PWM_Pin DIR_Pin PA10 PA11 */
-  GPIO_InitStruct.Pin = PWM_Pin|DIR_Pin|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_7;
+  GPIO_InitStruct.Pin = PWM_Pin|DIR_Pin|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_7;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
