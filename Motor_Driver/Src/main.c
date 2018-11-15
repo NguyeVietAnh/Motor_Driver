@@ -100,46 +100,61 @@ int main(void)
   /* USER CODE END 2 */
 	
 	//----Init LCD-----
-  LCD_Display();
-	HAL_GPIO_WritePin(GPIOA,DIR_Pin,GPIO_PIN_RESET);
+  //LCD_Display();
+	HAL_GPIO_WritePin(GPIOA,DIR_Pin,GPIO_PIN_SET);
 		
   while (1)
   {
 
 		//sprintf(DATA,"%d",s);
-		if (HAL_GPIO_ReadPin(GPIOB, UP_Pin) == 0)
-		{
-					
-			
-			s = s + 1;
+//		if (HAL_GPIO_ReadPin(GPIOB, UP_Pin) == 0)
+//		{
+//					
+//			
+//			s = s + 1;
+//			HAL_Delay(100);
+//			LCD_Gotoxy(9,1);
+//			sprintf(DATA,"%d",s);
+//			LCD_Puts(DATA);
+//		}
+//		
+//			if (HAL_GPIO_ReadPin(GPIOB, DOWN_Pin) == 0)
+//		{
+//					
+//			
+//			s = s - 1;
+//			if (s < 0) s =0;
+//			HAL_Delay(100);
+//			LCD_Gotoxy(9,1);
+//			sprintf(DATA,"%d",s);
+//			LCD_Puts(DATA);
+//   	}
+//		if (HAL_GPIO_ReadPin(GPIOA,CEN_Pin) == 0)
+//		{
+//			for (int dem = 0; dem < 100000; dem++){
+//			HAL_GPIO_TogglePin(GPIOA,PWM_Pin);
+//			HAL_Delay(s);
+//			}
+//		}
+//		printf("Gia tri PWM: %d",s);
+//		HAL_Delay(500);
+//
+     if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_0) == 1){
+			LCD_Display();
 			HAL_Delay(100);
-			LCD_Gotoxy(9,1);
+		  LCD_Gotoxy(9,1);
+			s = 1;
 			sprintf(DATA,"%d",s);
 			LCD_Puts(DATA);
-		}
-		
-			if (HAL_GPIO_ReadPin(GPIOB, DOWN_Pin) == 0)
-		{
-					
-			
-			s = s - 1;
-			if (s < 0) s =0;
-			HAL_Delay(100);
-			LCD_Gotoxy(9,1);
-			sprintf(DATA,"%d",s);
-			LCD_Puts(DATA);
-   	}
-		if (HAL_GPIO_ReadPin(GPIOA,CEN_Pin) == 0)
-		{
-			for (int dem = 0; dem < 10000; dem++){
-			HAL_GPIO_TogglePin(GPIOA,PWM_Pin);
-			HAL_Delay(s);
-			}
-		}
-		printf("Gia tri PWM: %d",s);
-		HAL_Delay(500);
-		
+      printf("1");			 
+      for (int a =0; a < 10000; a++){	
+			printf("1");	
+      HAL_GPIO_TogglePin(GPIOA,PWM_Pin);
+			HAL_Delay(1);}
+		  }
 
+// printf("Hello");
+// HAL_Delay(500);
   }
 
 	
@@ -273,6 +288,13 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin : PB5 */
   GPIO_InitStruct.Pin = GPIO_PIN_5;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+	
+	  /*Configure GPIO pin : PB0 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
