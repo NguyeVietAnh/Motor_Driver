@@ -10,3 +10,4 @@ Hi every one! This is my project using STM32F103 and LMD18200 to control DC moto
 - Day 13/11/2018: Writing the test module for Timer and Direction button. Timer is working, also button but wrong pin of control LMD182001. UARST running on UARST2 with PIN PA2, PA3. (test_idea branch)
 - IC MAX232 too hot when running, so I replace the new one and it run normally, thanks god!
 
+- Day 15/11/2018: Implement NodeMcu module in project, Wifi testing ok, Motor and project can work through Wifi 
