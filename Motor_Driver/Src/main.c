@@ -13,13 +13,44 @@
 #include "stm32f1xx_hal_lcd1602.h"
 #include "stdio.h"
 
+static __IO uint32_t usTicks;
 
 /* USER CODE BEGIN Includes */
 char DATA[20];
 int s = 0;//--Mang chua du lieu LCD--
 
 /* USER CODE END Includes */
+void SysTick_Handler1()
+{
+	if (usTicks != 0)
+	{
+		usTicks--;
+	}
+}
+void DelayInit()
+{
+	// Update SystemCoreClock value
+	SystemCoreClockUpdate();
+	// Configure the SysTick timer to overflow every 1 us
+	SysTick_Config(SystemCoreClock / 1000000);
+}
+void DelayUs(uint32_t us)
+{
+	// Reload us value
+	usTicks = us;
+	// Wait until usTick reach zero
+	while (usTicks);
+}
 
+void DelayMs(uint32_t ms)
+{
+	// Wait until ms reach zero
+	while (ms--)
+	{
+		// Delay 1ms
+		DelayUs(1000);
+	}
+}
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart2;
 
@@ -150,7 +181,7 @@ int main(void)
       for (int a =0; a < 10000; a++){	
 			printf("1");	
       HAL_GPIO_TogglePin(GPIOA,PWM_Pin);
-			HAL_Delay(1);}
+			DelayUs(100);}
 		  }
 
 // printf("Hello");
