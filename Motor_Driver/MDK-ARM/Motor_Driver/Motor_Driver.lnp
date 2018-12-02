@@ -4,7 +4,6 @@
 "motor_driver\stm32f1xx_it.o"
 "motor_driver\stm32f1xx_hal_msp.o"
 "motor_driver\stm32f1xx_hal_gpio_ex.o"
-"motor_driver\stm32f1xx_hal_i2c.o"
 "motor_driver\stm32f1xx_hal_tim.o"
 "motor_driver\stm32f1xx_hal_tim_ex.o"
 "motor_driver\stm32f1xx_hal_uart.o"
@@ -18,6 +17,8 @@
 "motor_driver\stm32f1xx_hal_flash.o"
 "motor_driver\stm32f1xx_hal_flash_ex.o"
 "motor_driver\system_stm32f1xx.o"
+"motor_driver\stm32f1xx_hal_lcd1602.o"
+"motor_driver\stm32f1xx_hal_delay.o"
 --library_type=microlib --strict --scatter "Motor_Driver\Motor_Driver.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

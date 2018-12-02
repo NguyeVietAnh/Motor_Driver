@@ -4,51 +4,32 @@
   * @file           : main.c
   * @brief          : Main program body
   ******************************************************************************
-  ** This notice applies to any and all portions of this file
-  * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
-  * inserted by the user or by software development tools
-  * are owned by their respective copyright owners.
-  *
-  * COPYRIGHT(c) 2018 STMicroelectronics
-  *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  *
-  ******************************************************************************
+
   */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "string.h"
+#include "stdio.h"
 #include "stm32f1xx_hal.h"
+#include "stm32f1xx_hal_lcd1602.h"      //-- Include LCD 16x2 dislplay in Custom Library.
+#include "stm32f1xx_hal_delay.h"       //--Include delay in microsecon in Custom Library.
+
+
+static __IO uint32_t usTicks;
 
 /* USER CODE BEGIN Includes */
+char DATA[20];
+int s = 0;//--Mang chua du lieu LCD--
 
 /* USER CODE END Includes */
-
+void SysTick_Handler1()
+{
+	if (usTicks != 0)
+	{
+		usTicks--;
+	}
+}
 /* Private variables ---------------------------------------------------------*/
-I2C_HandleTypeDef hi2c1;
-
-TIM_HandleTypeDef htim3;
-
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
@@ -60,16 +41,32 @@ UART_HandleTypeDef huart2;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
-static void MX_TIM3_Init(void);
-static void MX_I2C1_Init(void);
-                                    
-void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
-                                
+             
+
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
+#ifdef __GNUC__
+  /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
+     set to 'Yes') calls __io_putchar() */
+  #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#else
+  #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+  #define GETCHAR_PROTOTYPE int fgetc(FILE *f)
+#endif /* __GNUC__ */
+	PUTCHAR_PROTOTYPE
+{
+  /* Place your implementation of fputc here */
+  /* e.g. write a character to the USART */
+	HAL_UART_Transmit(&huart2, (uint8_t*)&ch,1,100);
 
+  /* Loop until the end of transmission */
+
+
+  return ch;
+}
 /* USER CODE END PFP */
+
 
 /* USER CODE BEGIN 0 */
 
@@ -80,6 +77,7 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
   *
   * @retval None
   */
+
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -105,46 +103,29 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
-  MX_TIM3_Init();
-  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
- HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+ 
   /* USER CODE END 2 */
+	
+	
 
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
+	HAL_GPIO_WritePin(GPIOA,DIR_Pin,GPIO_PIN_SET);     //--Set clockwise of motor.
+	//-----
+	LCD_Init();
+  LCD_Clear();
+                                    //--Set LCD display initial.
+
+  LCD_Display_Inital();
+	
   while (1)
   {
 
-  /* USER CODE END WHILE */
 
-  /* USER CODE BEGIN 3 */
-		
-//  HAL_Delay(100); 
-//  if(pwm_value == 0) step = 100;
-//  if(pwm_value == 2000) step = -100;
-//  pwm_value += step;
-//  user_pwm_setvalue(pwm_value);
-		
-		//-------------------------
-		
-//		HAL_GPIO_WritePin(GPIOA,GPIO_PIN_5,GPIO_PIN_SET);
-//		HAL_Delay(20);
-//		HAL_GPIO_WritePin(GPIOA,GPIO_PIN_5,GPIO_PIN_RESET);
-//		HAL_Delay(10);
-		
-		//--------------------------
-		if (HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_8) == 0) {HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13); HAL_Delay(1000);}
-		if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_15) == 0) HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
-		if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_14) == 0) HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
-		if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_13) == 0) HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
-		if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_12) == 0) HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
-		//------------------------------
-		//HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13); HAL_Delay(1000);
-		
   }
 
-  /* USER CODE END 3 */
+	
+	
+  
 
 }
 
@@ -198,64 +179,6 @@ void SystemClock_Config(void)
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
 }
 
-/* I2C1 init function */
-static void MX_I2C1_Init(void)
-{
-
-  hi2c1.Instance = I2C1;
-  hi2c1.Init.ClockSpeed = 100000;
-  hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
-  hi2c1.Init.OwnAddress1 = 0;
-  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-  hi2c1.Init.OwnAddress2 = 0;
-  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
-
-}
-
-/* TIM3 init function */
-static void MX_TIM3_Init(void)
-{
-
-  TIM_MasterConfigTypeDef sMasterConfig;
-  TIM_OC_InitTypeDef sConfigOC;
-
-  htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 1080-1;
-  htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = 2000-1;
-  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_PWM_Init(&htim3) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
-
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
-
-  sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 0;
-  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
-
-  HAL_TIM_MspPostInit(&htim3);
-
-}
-
 /* USART2 init function */
 static void MX_USART2_UART_Init(void)
 {
@@ -299,6 +222,9 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, PWM_Pin|DIR_Pin|GPIO_PIN_10|GPIO_PIN_11, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
+
   /*Configure GPIO pin : YELLOW_LED_Pin */
   GPIO_InitStruct.Pin = YELLOW_LED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -307,7 +233,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(YELLOW_LED_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PWM_Pin DIR_Pin PA10 PA11 */
-  GPIO_InitStruct.Pin = PWM_Pin|DIR_Pin|GPIO_PIN_10|GPIO_PIN_11;
+  GPIO_InitStruct.Pin = PWM_Pin|DIR_Pin|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_7;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -325,20 +251,26 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(CEN_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : PB5 */
+  GPIO_InitStruct.Pin = GPIO_PIN_5;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+	
+	  /*Configure GPIO pin : PB0 */
+//  GPIO_InitStruct.Pin = GPIO_PIN_0;
+//  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+//  GPIO_InitStruct.Pull = GPIO_NOPULL;
+//  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+//  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
 }
 
+//----Custom Function-----
 /* USER CODE BEGIN 4 */
-void user_pwm_setvalue(uint16_t value)
-{
-    TIM_OC_InitTypeDef sConfigOC;
-  
-    sConfigOC.OCMode = TIM_OCMODE_PWM1;
-    sConfigOC.Pulse = value;
-    sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-    sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-    HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_2);
-    HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);  
-}
+
+
 
 /* USER CODE END 4 */
 
